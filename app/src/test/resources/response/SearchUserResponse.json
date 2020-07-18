@@ -1,0 +1,48 @@
+{
+  "total_count": 68,
+  "incomplete_results": false,
+  "items": [
+    {
+      "login": "jefry",
+      "id": 2088724,
+      "node_id": "MDQ6VXNlcjIwODg3MjQ=",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/2088724?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jefry",
+      "html_url": "https://github.com/jefry",
+      "followers_url": "https://api.github.com/users/jefry/followers",
+      "following_url": "https://api.github.com/users/jefry/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jefry/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jefry/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jefry/subscriptions",
+      "organizations_url": "https://api.github.com/users/jefry/orgs",
+      "repos_url": "https://api.github.com/users/jefry/repos",
+      "events_url": "https://api.github.com/users/jefry/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jefry/received_events",
+      "type": "User",
+      "site_admin": false,
+      "score": 1.0
+    },
+    {
+      "login": "jefrydco",
+      "id": 20434351,
+      "node_id": "MDQ6VXNlcjIwNDM0MzUx",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/20434351?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jefrydco",
+      "html_url": "https://github.com/jefrydco",
+      "followers_url": "https://api.github.com/users/jefrydco/followers",
+      "following_url": "https://api.github.com/users/jefrydco/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jefrydco/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jefrydco/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jefrydco/subscriptions",
+      "organizations_url": "https://api.github.com/users/jefrydco/orgs",
+      "repos_url": "https://api.github.com/users/jefrydco/repos",
+      "events_url": "https://api.github.com/users/jefrydco/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jefrydco/received_events",
+      "type": "User",
+      "site_admin": false,
+      "score": 1.0
+    }
+  ]
+}
