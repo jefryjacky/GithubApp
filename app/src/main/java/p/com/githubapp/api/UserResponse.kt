@@ -1,7 +1,7 @@
 package p.com.githubapp.api
 
 import com.google.gson.annotations.SerializedName
-import p.com.githubapp.entity.User
+import p.com.githubapp.domain.entity.User
 
 data class UserResponse(
     @SerializedName("id")

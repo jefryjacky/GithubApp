@@ -1,4 +1,4 @@
-package p.com.githubapp.entity
+package p.com.githubapp.domain.entity
 
 data class User(
     val id:Int,

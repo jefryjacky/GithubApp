@@ -7,8 +7,8 @@ import org.hamcrest.CoreMatchers.`is`
 import org.junit.Assert.*
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.gherkin.Feature
-import p.com.githubapp.entity.User
-import p.com.githubapp.entity.SearchUserResult
+import p.com.githubapp.domain.entity.User
+import p.com.githubapp.domain.entity.SearchUserResult
 import p.com.githubapp.extension.createService
 import p.com.githubapp.extension.getResponseString
 

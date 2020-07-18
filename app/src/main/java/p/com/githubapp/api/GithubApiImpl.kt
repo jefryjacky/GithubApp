@@ -1,7 +1,7 @@
 package p.com.githubapp.api
 
 import io.reactivex.Single
-import p.com.githubapp.entity.SearchUserResult
+import p.com.githubapp.domain.entity.SearchUserResult
 import p.com.githubapp.extension.queryParam
 import p.com.githubapp.repository.api.GithubApi
 import java.net.URI
