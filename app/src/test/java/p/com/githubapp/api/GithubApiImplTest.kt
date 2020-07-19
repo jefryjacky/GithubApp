@@ -16,6 +16,7 @@ class GithubApiImplTest:Spek({
     lateinit var server:MockWebServer
     lateinit var api:GithubApiImpl
     val json = getResponseString("SearchUserResponse.json")
+    val errorJson = getResponseString("SearchUsersErrorResponse.json")
 
     beforeGroup {
         server = MockWebServer()
@@ -77,7 +78,7 @@ class GithubApiImplTest:Spek({
 
         Scenario("last page"){
             lateinit var searchUserResult:SearchUserResult
-            Given("first page header mock response"){
+            Given("last page header mock response"){
                 val response = MockResponse()
                 response.addHeader("link", "<https://api.github.com/search/users?q=j&page=33>; rel=\"prev\", <https://api.github.com/search/users?q=j&page=1>; rel=\"first\"")
                 response.setBody(json)
@@ -116,6 +117,22 @@ class GithubApiImplTest:Spek({
                 val expectedUser = User(id, profilePicture, username)
                 val result = testObserver.values()[0]
                 assertThat(result.users[1], `is`(expectedUser))
+            }
+        }
+
+        Scenario("github error"){
+            Given("error"){
+                val response = MockResponse()
+                response.setResponseCode(422)
+                response.status = "422 Unprocessable Entity"
+                response.setBody(errorJson)
+                server.enqueue(response)
+            }
+            When("search users"){
+                testObserver = api.searchUsers("", 1).test()
+            }
+            Then("error"){
+                testObserver.assertError { true }
             }
         }
     }
