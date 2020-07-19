@@ -36,7 +36,7 @@ class SearchUsersCaseTest: Spek({
                 val user = User(0,
                     "https://avatars0.githubusercontent.com/u/20434351?v=4",
                 "test")
-                result = SearchUserResult(64, false, 0, 33, listOf(user))
+                result = SearchUserResult(64, false, listOf(user))
                 given(githubRepository.search(query, page)).willReturn(Single.just(result.copy()))
             }
             When("search users"){
@@ -58,7 +58,7 @@ class SearchUsersCaseTest: Spek({
                 val user = User(0,
                     "https://avatars0.githubusercontent.com/u/20434351?v=4",
                     "test")
-                result = SearchUserResult(64, false, 0, 33, listOf(user))
+                result = SearchUserResult(64, false, listOf(user))
                 given(githubRepository.search(query, page)).willReturn(Single.just(result.copy()))
             }
             When("search users"){
@@ -83,7 +83,7 @@ class SearchUsersCaseTest: Spek({
                 val user = User(0,
                     "https://avatars0.githubusercontent.com/u/20434351?v=4",
                     "test")
-                result = SearchUserResult(64, false, 0, 33, listOf(user))
+                result = SearchUserResult(64, false, listOf(user))
                 given(githubRepository.search(query, page)).willReturn(Single.just(result.copy()))
             }
             When("search users"){
@@ -105,7 +105,7 @@ class SearchUsersCaseTest: Spek({
                 page = 1
             }
             Given("search user result"){
-                result = SearchUserResult(0, false, 0, 33, listOf())
+                result = SearchUserResult(0, false, listOf())
                 given(githubRepository.search(query, page)).willReturn(Single.just(result.copy()))
             }
             When("search users"){
