@@ -1,5 +1,7 @@
 package p.com.githubapp.extension
 
+import androidx.arch.core.executor.ArchTaskExecutor
+import androidx.arch.core.executor.TaskExecutor
 import okhttp3.HttpUrl
 import okio.buffer
 import okio.source
@@ -13,6 +15,28 @@ fun Root.getResponseString(filename:String):String{
         ?.getResourceAsStream("response/${filename}")
     val source = inputStream!!.source().buffer()
     return source.readString(Charsets.UTF_8)
+}
+
+fun Root.instantTaskExecutorRule(){
+    beforeGroup {
+        ArchTaskExecutor.getInstance().setDelegate(object : TaskExecutor() {
+            override fun executeOnDiskIO(runnable: Runnable) {
+                runnable.run()
+            }
+
+            override fun postToMainThread(runnable: Runnable) {
+                runnable.run()
+            }
+
+            override fun isMainThread(): Boolean {
+                return true
+            }
+        })
+    }
+
+    afterGroup {
+        ArchTaskExecutor.getInstance().setDelegate(null)
+    }
 }
 
 fun <T> createService(url:HttpUrl, service:Class<T>):T{
