@@ -9,6 +9,8 @@ import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.gherkin.Feature
 import p.com.githubapp.domain.entity.User
 import p.com.githubapp.domain.entity.SearchUserResult
+import p.com.githubapp.exception.ErrorType
+import p.com.githubapp.exception.GithubException
 import p.com.githubapp.extension.createService
 import p.com.githubapp.extension.getResponseString
 
@@ -65,7 +67,7 @@ class GithubApiImplTest:Spek({
             }
         }
 
-        Scenario("github error"){
+        Scenario("github http error"){
             Given("error"){
                 val response = MockResponse()
                 response.setResponseCode(422)
@@ -75,8 +77,34 @@ class GithubApiImplTest:Spek({
             When("search users"){
                 testObserver = api.searchUsers("", 1).test()
             }
-            Then("error"){
-                testObserver.assertError { true }
+            Then("http error"){
+                testObserver.assertError {
+                    (it as GithubException).type == ErrorType.HTTP
+                }
+            }
+            Then("error message"){
+                testObserver.assertError {
+                    (it as GithubException).message == "Validation Failed"
+                }
+            }
+            Then("error code"){
+                testObserver.assertError {
+                    (it as GithubException).code == 422
+                }
+            }
+        }
+
+        Scenario("github network error"){
+            Given("error"){
+               server.shutdown()
+            }
+            When("search users"){
+                testObserver = api.searchUsers("", 1).test()
+            }
+            Then("network error"){
+                testObserver.assertError {
+                    (it as GithubException).type == ErrorType.NETWORK
+                }
             }
         }
     }
