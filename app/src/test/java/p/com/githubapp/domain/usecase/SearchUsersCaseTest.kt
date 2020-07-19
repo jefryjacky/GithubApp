@@ -76,7 +76,7 @@ class SearchUsersCaseTest: Spek({
             Given("query is jef"){
                 query = "Jef"
             }
-            Given("page is 1"){
+            Given("page is 0"){
                 page = 0
             }
             Given("search user result"){
@@ -94,6 +94,27 @@ class SearchUsersCaseTest: Spek({
             }
             Then("no error"){
                 testObserver.assertNoErrors()
+            }
+        }
+
+        Scenario("repository return empty list then return no matching account error"){
+            Given("query is jef"){
+                query = "Jef"
+            }
+            Given("page is 1"){
+                page = 1
+            }
+            Given("search user result"){
+                result = SearchUserResult(0, false, 0, 33, listOf())
+                given(githubRepository.search(query, page)).willReturn(Single.just(result.copy()))
+            }
+            When("search users"){
+                testObserver = usecase.search(query, page).test()
+            }
+            Then("usecase return error"){
+                testObserver.assertError {
+                    it.message == SearchUsersUseCase.ERROR_MESSAGE_NO_MATCHING_ACCOUNT
+                }
             }
         }
     }
