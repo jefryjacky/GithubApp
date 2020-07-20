@@ -6,8 +6,9 @@ import p.com.githubapp.exception.ErrorType
 import p.com.githubapp.exception.GithubException
 import p.com.githubapp.repository.GithubRepository
 import java.lang.Exception
+import javax.inject.Inject
 
-class SearchUsersUseCase constructor(
+class SearchUsersUseCase @Inject constructor(
     private val githubRepository:GithubRepository) {
 
     fun search(query:String, page:Int):Maybe<SearchUserResult>{
