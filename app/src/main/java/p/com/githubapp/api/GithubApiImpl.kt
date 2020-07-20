@@ -8,8 +8,9 @@ import p.com.githubapp.exception.GithubException
 import p.com.githubapp.repository.api.GithubApi
 import retrofit2.HttpException
 import java.io.IOException
+import javax.inject.Inject
 
-class GithubApiImpl constructor(
+class GithubApiImpl @Inject constructor(
     private val api:GithubApiService
 ):GithubApi {
     override fun searchUsers(query: String, page: Int): Single<SearchUserResult> {

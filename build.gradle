@@ -33,4 +33,5 @@ ext{
     paging_version = "2.1.2"
     lifecycle_version = "2.2.0"
     dagger_version = '2.25.2'
+    okhttp_version = '4.2.2'
 }

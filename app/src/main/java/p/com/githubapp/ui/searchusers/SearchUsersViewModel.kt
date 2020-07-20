@@ -7,8 +7,9 @@ import io.reactivex.disposables.CompositeDisposable
 import p.com.githubapp.domain.entity.User
 import p.com.githubapp.ui.NetworkState
 import p.com.githubapp.ui.searchusers.pagination.SearchUsersPagination
+import javax.inject.Inject
 
-class SearchUsersViewModel constructor(
+class SearchUsersViewModel @Inject constructor(
     private val pagination: SearchUsersPagination
 ):ViewModel() {
     private val disposeables = CompositeDisposable()
