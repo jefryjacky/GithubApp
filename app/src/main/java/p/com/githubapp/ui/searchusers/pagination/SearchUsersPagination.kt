@@ -29,7 +29,7 @@ class SearchUsersPagination @Inject constructor(
         factory.query = query
     }
 
-    fun getNetworkState():LiveData<NetworkState>{
+    fun getNetworkState():LiveData<Event<NetworkState>>{
         return Transformations.switchMap(factory.sourceLiveData){
             it.networkStateEvent
         }

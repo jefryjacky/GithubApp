@@ -8,6 +8,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import p.com.githubapp.domain.entity.User
 import p.com.githubapp.domain.usecase.SearchUsersUseCase
+import p.com.githubapp.exception.ErrorType
 import p.com.githubapp.exception.GithubException
 import p.com.githubapp.ui.Event
 import p.com.githubapp.ui.NetworkState
@@ -18,7 +19,7 @@ class SearchUserPageKeyDataSource constructor(
     private val disposeables:CompositeDisposable
 ) : PageKeyedDataSource<Int, User>() {
 
-    var networkStateEvent = MutableLiveData<NetworkState>()
+    var networkStateEvent = MutableLiveData<Event<NetworkState>>()
     var noMatchingAccountEvent = MutableLiveData<Event<Boolean>>()
     private var retry:(()->Unit)? = null
 
@@ -27,8 +28,8 @@ class SearchUserPageKeyDataSource constructor(
         callback: LoadInitialCallback<Int, User>
     ) {
         disposeables.add(searchUsersUseCase.search(query, 1)
-            .doOnSubscribe { networkStateEvent.postValue(NetworkState.LOADING) }
-            .doAfterSuccess {  networkStateEvent.postValue(NetworkState.LOADED) }
+            .doOnSubscribe { networkStateEvent.postValue(Event(NetworkState.LOADING)) }
+            .doAfterSuccess {  networkStateEvent.postValue(Event(NetworkState.LOADED)) }
             .subscribe({
                 callback.onResult(it.users,
                     0,
@@ -43,8 +44,8 @@ class SearchUserPageKeyDataSource constructor(
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, User>) {
         disposeables.add(searchUsersUseCase.search(query, params.key)
-            .doOnSubscribe { networkStateEvent.postValue(NetworkState.LOADING) }
-            .doAfterSuccess {  networkStateEvent.postValue(NetworkState.LOADED) }
+            .doOnSubscribe { networkStateEvent.postValue(Event(NetworkState.LOADING)) }
+            .doAfterSuccess {  networkStateEvent.postValue(Event(NetworkState.LOADED)) }
             .subscribe({
                 callback.onResult(it.users,
                     params.key + 1)
@@ -73,17 +74,17 @@ class SearchUserPageKeyDataSource constructor(
             when (t.message) {
                 SearchUsersUseCase.ERROR_MESSAGE_NO_MATCHING_ACCOUNT -> {
                     noMatchingAccountEvent.postValue(Event(true))
-                    networkStateEvent.postValue(NetworkState.LOADED)
+                    networkStateEvent.postValue(Event(NetworkState.LOADED))
                 }
                 SearchUsersUseCase.ERROR_MESSAGE_END_OF_PAGE -> {
-                    networkStateEvent.postValue(NetworkState.LOADED)
+                    networkStateEvent.postValue(Event(NetworkState.LOADED))
                 }
                 else -> {
-                    networkStateEvent.postValue(NetworkState.error(t.message))
+                    networkStateEvent.postValue(Event(NetworkState.error(t.message)))
                 }
             }
         } else{
-            networkStateEvent.postValue(NetworkState.error(t.message))
+            networkStateEvent.postValue(Event(NetworkState.error(t.message)))
         }
     }
 

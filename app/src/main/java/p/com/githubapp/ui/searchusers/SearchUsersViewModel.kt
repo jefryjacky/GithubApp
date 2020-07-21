@@ -15,7 +15,7 @@ class SearchUsersViewModel @Inject constructor(
 ):ViewModel() {
     private val disposeables = CompositeDisposable()
     val users:LiveData<PagedList<User>>
-    val networkStateEvent:LiveData<NetworkState> = pagination.getNetworkState()
+    val networkStateEvent:LiveData<Event<NetworkState>> = pagination.getNetworkState()
     val noMatchingAccountEvent:LiveData<Event<Boolean>> = pagination.getNoMatchingAccountEvent()
 
     init {

@@ -10,6 +10,8 @@ import kotlinx.android.synthetic.main.fragment_search_users.*
 import p.com.githubapp.MainActivity
 import p.com.githubapp.R
 import p.com.githubapp.ui.BaseFragment
+import p.com.githubapp.ui.NetworkState
+import p.com.githubapp.ui.Status
 import p.com.githubapp.ui.searchusers.adapter.UsersAdapter
 
 class SearchUsersFragment: BaseFragment(R.layout.fragment_search_users) {
@@ -52,6 +54,18 @@ class SearchUsersFragment: BaseFragment(R.layout.fragment_search_users) {
                     .setPositiveButton(R.string.btn_ok) { dialog, _ ->
                         dialog.dismiss()
                     }.create().show()
+            }
+        })
+
+        mViewModel.networkStateEvent.observe(viewLifecycleOwner, Observer {event->
+            event.contentIfNotHaveBeenHandle?.let {
+                if(it.status == Status.FAILED){
+                    AlertDialog.Builder(requireContext())
+                        .setMessage(it.msg)
+                        .setPositiveButton(R.string.btn_ok) { dialog, _ ->
+                            dialog.dismiss()
+                        }.create().show()
+                }
             }
         })
     }

@@ -32,7 +32,7 @@ class SearchUserPageKeyDataSourceTest: Spek({
     lateinit var callBack: LoadCallback<Int, User>
     lateinit var params: LoadParams<Int>
     val total = Random.nextInt()
-    lateinit var networkStateObser: Observer<NetworkState>
+    lateinit var networkStateObser: Observer<Event<NetworkState>>
     lateinit var noMatchingAccountObserver: Observer<Event<Boolean>>
 
     beforeEachGroup {
@@ -72,10 +72,10 @@ class SearchUserPageKeyDataSourceTest: Spek({
                 verify(initialCallback).onResult(listOf(user), 0, total, 0, 2)
             }
             Then("loading"){
-                argumentCaptor<NetworkState> {
+                argumentCaptor<Event<NetworkState>> {
                     verify(networkStateObser, times(2)).onChanged(capture())
-                    assertThat(firstValue, `is`(NetworkState.LOADING))
-                    assertThat(secondValue, `is`(NetworkState.LOADED))
+                    assertThat(firstValue.peekContent(), `is`(NetworkState.LOADING))
+                    assertThat(secondValue.peekContent(), `is`(NetworkState.LOADED))
                 }
             }
         }
@@ -94,10 +94,10 @@ class SearchUserPageKeyDataSourceTest: Spek({
                 verify(pageKeyDataSource).setRetryLoadInitial(initialParams, initialCallback)
             }
             Then("loading"){
-                argumentCaptor<NetworkState> {
+                argumentCaptor<Event<NetworkState>> {
                     verify(networkStateObser, times(2)).onChanged(capture())
-                    assertThat(firstValue, `is`(NetworkState.LOADING))
-                    assertThat(secondValue, `is`(NetworkState.error(errorMessage)))
+                    assertThat(firstValue.peekContent(), `is`(NetworkState.LOADING))
+                    assertThat(secondValue.peekContent(), `is`(NetworkState.error(errorMessage)))
                 }
             }
         }
@@ -116,10 +116,10 @@ class SearchUserPageKeyDataSourceTest: Spek({
                 verify(pageKeyDataSource).setRetryLoadInitial(initialParams, initialCallback)
             }
             Then("loading"){
-                argumentCaptor<NetworkState> {
+                argumentCaptor<Event<NetworkState>> {
                     verify(networkStateObser, times(2)).onChanged(capture())
-                    assertThat(firstValue, `is`(NetworkState.LOADING))
-                    assertThat(secondValue, `is`(NetworkState.LOADED))
+                    assertThat(firstValue.peekContent(), `is`(NetworkState.LOADING))
+                    assertThat(secondValue.peekContent(), `is`(NetworkState.LOADED))
                 }
             }
             Then("notify no matching account observer"){
@@ -144,10 +144,10 @@ class SearchUserPageKeyDataSourceTest: Spek({
                 verify(pageKeyDataSource).setRetryLoadInitial(initialParams, initialCallback)
             }
             Then("loading"){
-                argumentCaptor<NetworkState> {
+                argumentCaptor<Event<NetworkState>> {
                     verify(networkStateObser, times(2)).onChanged(capture())
-                    assertThat(firstValue, `is`(NetworkState.LOADING))
-                    assertThat(secondValue, `is`(NetworkState.error(errorMessage)))
+                    assertThat(firstValue.peekContent(), `is`(NetworkState.LOADING))
+                    assertThat(secondValue.contentIfNotHaveBeenHandle, `is`(NetworkState.error(errorMessage)))
                 }
             }
         }
@@ -176,10 +176,10 @@ class SearchUserPageKeyDataSourceTest: Spek({
                 verify(callBack).onResult(listOf(user), paramsKey+1)
             }
             Then("loading"){
-                argumentCaptor<NetworkState> {
+                argumentCaptor<Event<NetworkState>> {
                     verify(networkStateObser, times(2)).onChanged(capture())
-                    assertThat(firstValue, `is`(NetworkState.LOADING))
-                    assertThat(secondValue, `is`(NetworkState.LOADED))
+                    assertThat(firstValue.peekContent(), `is`(NetworkState.LOADING))
+                    assertThat(secondValue.peekContent(), `is`(NetworkState.LOADED))
                 }
             }
         }
@@ -201,10 +201,10 @@ class SearchUserPageKeyDataSourceTest: Spek({
                 verify(pageKeyDataSource).setRetryLoadAfter(params, callBack)
             }
             Then("loading"){
-                argumentCaptor<NetworkState> {
+                argumentCaptor<Event<NetworkState>> {
                     verify(networkStateObser, times(2)).onChanged(capture())
-                    assertThat(firstValue, `is`(NetworkState.LOADING))
-                    assertThat(secondValue, `is`(NetworkState.error(errorMessage)))
+                    assertThat(firstValue.peekContent(), `is`(NetworkState.LOADING))
+                    assertThat(secondValue.peekContent(), `is`(NetworkState.error(errorMessage)))
                 }
             }
         }
@@ -226,10 +226,10 @@ class SearchUserPageKeyDataSourceTest: Spek({
                 verify(pageKeyDataSource).setRetryLoadAfter(params, callBack)
             }
             Then("loading"){
-                argumentCaptor<NetworkState> {
+                argumentCaptor<Event<NetworkState>> {
                     verify(networkStateObser, times(2)).onChanged(capture())
-                    assertThat(firstValue, `is`(NetworkState.LOADING))
-                    assertThat(secondValue, `is`(NetworkState.LOADED))
+                    assertThat(firstValue.peekContent(), `is`(NetworkState.LOADING))
+                    assertThat(secondValue.peekContent(), `is`(NetworkState.LOADED))
                 }
             }
         }
@@ -251,10 +251,10 @@ class SearchUserPageKeyDataSourceTest: Spek({
                 verify(pageKeyDataSource).setRetryLoadAfter(params, callBack)
             }
             Then("loading"){
-                argumentCaptor<NetworkState> {
+                argumentCaptor<Event<NetworkState>> {
                     verify(networkStateObser, times(2)).onChanged(capture())
-                    assertThat(firstValue, `is`(NetworkState.LOADING))
-                    assertThat(secondValue, `is`(NetworkState.error(errorMessage)))
+                    assertThat(firstValue.peekContent(), `is`(NetworkState.LOADING))
+                    assertThat(secondValue.peekContent(), `is`(NetworkState.error(errorMessage)))
                 }
             }
         }
