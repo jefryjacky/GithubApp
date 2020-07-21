@@ -44,6 +44,7 @@ class SearchUsersFragment: BaseFragment(R.layout.fragment_search_users) {
 
     private fun initObserver(){
        mViewModel.users.observe(viewLifecycleOwner, Observer {
+           rv_users.visibility = View.VISIBLE
            mAdapter.submitList(it)
        })
 
@@ -58,6 +59,7 @@ class SearchUsersFragment: BaseFragment(R.layout.fragment_search_users) {
         })
 
         mViewModel.networkStateEvent.observe(viewLifecycleOwner, Observer {event->
+            mAdapter.setNetworkState(event.peekContent())
             event.contentIfNotHaveBeenHandle?.let {
                 if(it.status == Status.FAILED){
                     AlertDialog.Builder(requireContext())
