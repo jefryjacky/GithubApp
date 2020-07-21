@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
 import io.reactivex.disposables.CompositeDisposable
 import p.com.githubapp.domain.entity.User
+import p.com.githubapp.ui.Event
 import p.com.githubapp.ui.NetworkState
 import p.com.githubapp.ui.searchusers.pagination.SearchUsersPagination
 import javax.inject.Inject
@@ -15,7 +16,7 @@ class SearchUsersViewModel @Inject constructor(
     private val disposeables = CompositeDisposable()
     val users:LiveData<PagedList<User>>
     val networkStateEvent:LiveData<NetworkState> = pagination.getNetworkState()
-    val noMatchingAccountEvent:LiveData<Boolean> = pagination.getNoMatchingAccountEvent()
+    val noMatchingAccountEvent:LiveData<Event<Boolean>> = pagination.getNoMatchingAccountEvent()
 
     init {
         pagination.setDisposeable(disposeables)

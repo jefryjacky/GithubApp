@@ -9,6 +9,7 @@ import io.reactivex.schedulers.Schedulers
 import p.com.githubapp.domain.entity.User
 import p.com.githubapp.domain.usecase.SearchUsersUseCase
 import p.com.githubapp.exception.GithubException
+import p.com.githubapp.ui.Event
 import p.com.githubapp.ui.NetworkState
 
 class SearchUserPageKeyDataSource constructor(
@@ -18,7 +19,7 @@ class SearchUserPageKeyDataSource constructor(
 ) : PageKeyedDataSource<Int, User>() {
 
     var networkStateEvent = MutableLiveData<NetworkState>()
-    var noMatchingAccountEvent = MutableLiveData<Boolean>()
+    var noMatchingAccountEvent = MutableLiveData<Event<Boolean>>()
     private var retry:(()->Unit)? = null
 
     override fun loadInitial(
@@ -71,7 +72,7 @@ class SearchUserPageKeyDataSource constructor(
         if(t is GithubException){
             when (t.message) {
                 SearchUsersUseCase.ERROR_MESSAGE_NO_MATCHING_ACCOUNT -> {
-                    noMatchingAccountEvent.postValue(true)
+                    noMatchingAccountEvent.postValue(Event(true))
                     networkStateEvent.postValue(NetworkState.LOADED)
                 }
                 SearchUsersUseCase.ERROR_MESSAGE_END_OF_PAGE -> {

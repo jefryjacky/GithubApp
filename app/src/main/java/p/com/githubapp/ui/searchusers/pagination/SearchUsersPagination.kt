@@ -6,6 +6,7 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import io.reactivex.disposables.CompositeDisposable
 import p.com.githubapp.domain.entity.User
+import p.com.githubapp.ui.Event
 import p.com.githubapp.ui.NetworkState
 import javax.inject.Inject
 
@@ -34,7 +35,7 @@ class SearchUsersPagination @Inject constructor(
         }
     }
 
-    fun getNoMatchingAccountEvent():LiveData<Boolean>{
+    fun getNoMatchingAccountEvent():LiveData<Event<Boolean>>{
         return Transformations.switchMap(factory.sourceLiveData){
             it.noMatchingAccountEvent
         }

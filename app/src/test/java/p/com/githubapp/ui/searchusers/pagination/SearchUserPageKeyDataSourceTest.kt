@@ -15,6 +15,7 @@ import p.com.githubapp.domain.usecase.SearchUsersUseCase
 import p.com.githubapp.exception.ErrorType
 import p.com.githubapp.exception.GithubException
 import p.com.githubapp.extension.instantTaskExecutorRule
+import p.com.githubapp.ui.Event
 import p.com.githubapp.ui.NetworkState
 import java.lang.Exception
 import kotlin.random.Random
@@ -32,7 +33,7 @@ class SearchUserPageKeyDataSourceTest: Spek({
     lateinit var params: LoadParams<Int>
     val total = Random.nextInt()
     lateinit var networkStateObser: Observer<NetworkState>
-    lateinit var noMatchingAccountObserver: Observer<Boolean>
+    lateinit var noMatchingAccountObserver: Observer<Event<Boolean>>
 
     beforeEachGroup {
         initialParams = mock()
@@ -122,7 +123,10 @@ class SearchUserPageKeyDataSourceTest: Spek({
                 }
             }
             Then("notify no matching account observer"){
-                then(noMatchingAccountObserver).should().onChanged(true)
+                argumentCaptor<Event<Boolean>> {
+                    then(noMatchingAccountObserver).should().onChanged(capture())
+                    assertThat(firstValue.peekContent(), `is`(true))
+                }
             }
         }
 

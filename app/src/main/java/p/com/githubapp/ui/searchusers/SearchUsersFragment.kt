@@ -1,5 +1,6 @@
 package p.com.githubapp.ui.searchusers
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.View
@@ -43,5 +44,15 @@ class SearchUsersFragment: BaseFragment(R.layout.fragment_search_users) {
        mViewModel.users.observe(viewLifecycleOwner, Observer {
            mAdapter.submitList(it)
        })
+
+        mViewModel.noMatchingAccountEvent.observe(viewLifecycleOwner, Observer {
+            it.contentIfNotHaveBeenHandle?.let {
+                AlertDialog.Builder(requireContext())
+                    .setMessage(R.string.no_matching_account)
+                    .setPositiveButton(R.string.btn_ok) { dialog, _ ->
+                        dialog.dismiss()
+                    }.create().show()
+            }
+        })
     }
 }
