@@ -1,18 +1,21 @@
 package p.com.githubapp.ui.searchusers.adapter
 
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import p.com.githubapp.domain.entity.User
 
-class UsersAdapter:ListAdapter<User, UserViewHolder>(UserDiffUtil()) {
+class UsersAdapter:PagedListAdapter<User, UserViewHolder>(UserDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         return UserViewHolder.create(parent)
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-       holder.bind(getItem(position))
+        val user = getItem(position)
+        user?.let {
+            holder.bind(it)
+        }
     }
 
     class UserDiffUtil: DiffUtil.ItemCallback<User>(){

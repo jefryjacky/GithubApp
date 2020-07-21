@@ -15,8 +15,8 @@ class SearchUsersUseCase @Inject constructor(
         if(query.isBlank() || page == 0) return Maybe.empty()
         return githubRepository.search(query, page)
             .flatMapMaybe {
-                if(it.users.isEmpty()) Maybe.error(GithubException(ErrorType.COMMON , ERROR_MESSAGE_NO_MATCHING_ACCOUNT, 0))
-                else Maybe.just(it)
+                if(it.users.isEmpty()) return@flatMapMaybe Maybe.error<SearchUserResult>(GithubException(ErrorType.COMMON , ERROR_MESSAGE_NO_MATCHING_ACCOUNT, 0))
+                else return@flatMapMaybe Maybe.just(it)
             }
     }
 

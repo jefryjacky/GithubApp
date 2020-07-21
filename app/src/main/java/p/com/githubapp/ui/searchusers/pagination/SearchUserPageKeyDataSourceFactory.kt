@@ -14,8 +14,8 @@ class SearchUserPageKeyDataSourceFactory @Inject constructor(
     var disposeables:CompositeDisposable? = null
     val sourceLiveData = MutableLiveData<SearchUserPageKeyDataSource>()
     override fun create(): DataSource<Int, User> {
-        val source = SearchUserPageKeyDataSource(searchUsersUseCase, query!!, disposeables!!)
-        sourceLiveData.value = source
+        val source = SearchUserPageKeyDataSource(searchUsersUseCase, query?:"", disposeables!!)
+        sourceLiveData.postValue(source)
         return source
     }
 }

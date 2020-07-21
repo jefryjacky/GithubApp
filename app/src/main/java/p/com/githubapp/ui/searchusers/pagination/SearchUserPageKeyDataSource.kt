@@ -71,7 +71,7 @@ class SearchUserPageKeyDataSource constructor(
         if(t is GithubException){
             when (t.message) {
                 SearchUsersUseCase.ERROR_MESSAGE_NO_MATCHING_ACCOUNT -> {
-                    noMatchingAccountEvent.value = true
+                    noMatchingAccountEvent.postValue(true)
                     networkStateEvent.postValue(NetworkState.LOADED)
                 }
                 SearchUsersUseCase.ERROR_MESSAGE_END_OF_PAGE -> {
