@@ -75,21 +75,21 @@ class SearchUserPageKeyDataSource constructor(
 
     private fun handleError(t: Throwable){
         if(t is GithubException){
-            when (t.message) {
-                SearchUsersUseCase.ERROR_MESSAGE_NO_MATCHING_ACCOUNT -> {
-                    noMatchingAccountEvent.postValue(Event(true))
-                    networkStateEvent.postValue(Event(NetworkState.LOADED))
-                }
-                SearchUsersUseCase.ERROR_MESSAGE_END_OF_PAGE -> {
-                    networkStateEvent.postValue(Event(NetworkState.LOADED))
-                }
-                else -> {
-                    networkStateEvent.postValue(Event(NetworkState.error(t.message)))
+            if(t.type == ErrorType.COMMON){
+                when (t.message) {
+                    SearchUsersUseCase.ERROR_MESSAGE_NO_MATCHING_ACCOUNT -> {
+                        noMatchingAccountEvent.postValue(Event(true))
+                        networkStateEvent.postValue(Event(NetworkState.LOADED))
+                        return
+                    }
+                    SearchUsersUseCase.ERROR_MESSAGE_END_OF_PAGE -> {
+                        networkStateEvent.postValue(Event(NetworkState.LOADED))
+                        return
+                    }
                 }
             }
-        } else{
-            networkStateEvent.postValue(Event(NetworkState.error(t.message)))
         }
+        networkStateEvent.postValue(Event(NetworkState.error(t.message)))
     }
 
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, User>) {

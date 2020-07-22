@@ -97,15 +97,40 @@ class SearchUsersCaseTest: Spek({
             }
         }
 
-        Scenario("repository return empty list then return no matching account error"){
+        Scenario("There is no matching account"){
             Given("query is jef"){
                 query = "Jef"
             }
-            Given("page is 1"){
-                page = 1
+            Given("page 1..max"){
+                page = Random.nextInt(1, Int.MAX_VALUE)
             }
-            Given("search user result"){
-                result = SearchUserResult(0, false, listOf())
+            Given("search user result total is zero and empty list"){
+                var total = 0
+                lateinit var list:List<User>
+                result = SearchUserResult(total, false, list)
+                given(githubRepository.search(query, page)).willReturn(Single.just(result.copy()))
+            }
+            When("search users"){
+                testObserver = usecase.search(query, page).test()
+            }
+            Then("usecase return no matching account error"){
+                testObserver.assertError {
+                    it.message == SearchUsersUseCase.ERROR_MESSAGE_NO_MATCHING_ACCOUNT
+                }
+            }
+        }
+
+        Scenario("end of page"){
+            Given("query is jef"){
+                query = "Jef"
+            }
+            Given("page is 2..max"){
+                page = Random.nextInt(2, Int.MAX_VALUE)
+            }
+            Given("search user result total is not zero and list is empty"){
+                val total = Random.nextInt(1, Int.MAX_VALUE)
+                val list = listOf<User>()
+                result = SearchUserResult(total, false, list)
                 given(githubRepository.search(query, page)).willReturn(Single.just(result.copy()))
             }
             When("search users"){
@@ -113,7 +138,7 @@ class SearchUsersCaseTest: Spek({
             }
             Then("usecase return error"){
                 testObserver.assertError {
-                    it.message == SearchUsersUseCase.ERROR_MESSAGE_NO_MATCHING_ACCOUNT
+                    it.message == SearchUsersUseCase.ERROR_MESSAGE_END_OF_PAGE
                 }
             }
         }
