@@ -11,9 +11,9 @@ import javax.inject.Inject
 class SearchUsersUseCase @Inject constructor(
     private val githubRepository:GithubRepository) {
 
-    fun search(query:String, page:Int):Maybe<SearchUserResult>{
+    fun search(query:String, page:Int, sizePerPage:Int):Maybe<SearchUserResult>{
         if(query.isBlank() || page == 0) return Maybe.empty()
-        return githubRepository.search(query, page)
+        return githubRepository.search(query, page, sizePerPage)
             .flatMapMaybe {
                 if(it.total > 0 && it.users.isEmpty()) {
                     return@flatMapMaybe Maybe

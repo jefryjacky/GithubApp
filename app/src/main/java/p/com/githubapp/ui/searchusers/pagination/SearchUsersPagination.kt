@@ -16,6 +16,7 @@ class SearchUsersPagination @Inject constructor(
     fun getDataSource(): LiveData<PagedList<User>> {
         val config = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
+            .setPageSize(10)
             .setPrefetchDistance(10)
             .build()
         return LivePagedListBuilder(factory, config).build()

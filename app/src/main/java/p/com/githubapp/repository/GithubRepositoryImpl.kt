@@ -8,7 +8,7 @@ import javax.inject.Inject
 class GithubRepositoryImpl @Inject constructor(
     private val api:GithubApi
 ):GithubRepository {
-    override fun search(query: String, page: Int): Single<SearchUserResult> {
-        return api.searchUsers(query, page)
+    override fun search(query: String, page: Int, sizePerPage:Int): Single<SearchUserResult> {
+        return api.searchUsers(query, page, sizePerPage)
     }
 }

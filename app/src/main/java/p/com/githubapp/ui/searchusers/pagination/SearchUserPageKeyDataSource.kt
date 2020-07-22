@@ -28,8 +28,11 @@ class SearchUserPageKeyDataSource constructor(
         params: LoadInitialParams<Int>,
         callback: LoadInitialCallback<Int, User>
     ) {
-        disposeables.add(searchUsersUseCase.search(query, 1)
+        disposeables.add(searchUsersUseCase.search(query, 1, params.requestedLoadSize)
             .doOnSubscribe { networkStateEvent.postValue(Event(NetworkState.LOADING)) }
+            .doAfterSuccess {
+                networkStateEvent.postValue(Event(NetworkState.LOADED))
+            }
             .doOnComplete {
                 networkStateEvent.postValue(Event(NetworkState.LOADED))
             }
@@ -46,8 +49,11 @@ class SearchUserPageKeyDataSource constructor(
     }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, User>) {
-        disposeables.add(searchUsersUseCase.search(query, params.key)
+        disposeables.add(searchUsersUseCase.search(query, params.key, params.requestedLoadSize)
             .doOnSubscribe { networkStateEvent.postValue(Event(NetworkState.LOADING)) }
+            .doAfterSuccess {
+                networkStateEvent.postValue(Event(NetworkState.LOADED))
+            }
             .doOnComplete {
                 networkStateEvent.postValue(Event(NetworkState.LOADED))
             }

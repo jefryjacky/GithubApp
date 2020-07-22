@@ -7,6 +7,7 @@ import org.hamcrest.CoreMatchers.`is`
 import org.junit.Assert.*
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.gherkin.Feature
+import p.com.githubapp.common.schedulers.TestRxSchedulers
 import p.com.githubapp.domain.entity.User
 import p.com.githubapp.domain.entity.SearchUserResult
 import p.com.githubapp.exception.ErrorType
@@ -28,7 +29,7 @@ class GithubApiImplTest:Spek({
     beforeEachGroup {
         val url = server.url("/")
         val service = createService(url, GithubApiService::class.java)
-        api = GithubApiImpl(service)
+        api = GithubApiImpl(service, TestRxSchedulers())
     }
 
 //    afterGroup { server.shutdown() }
@@ -42,7 +43,7 @@ class GithubApiImplTest:Spek({
                 server.enqueue(response)
             }
             When("search users"){
-                testObserver = api.searchUsers("jefry", 1).test()
+                testObserver = api.searchUsers("jefry", 1, 10).test()
             }
             Then("total is 68"){
                 testObserver.assertValue {
@@ -75,7 +76,7 @@ class GithubApiImplTest:Spek({
                 server.enqueue(response)
             }
             When("search users"){
-                testObserver = api.searchUsers("", 1).test()
+                testObserver = api.searchUsers("", 1, 10).test()
             }
             Then("http error"){
                 testObserver.assertError {
@@ -99,7 +100,7 @@ class GithubApiImplTest:Spek({
                server.shutdown()
             }
             When("search users"){
-                testObserver = api.searchUsers("", 1).test()
+                testObserver = api.searchUsers("", 1, 10).test()
             }
             Then("network error"){
                 testObserver.assertError {

@@ -34,12 +34,16 @@ class SearchUserPageKeyDataSourceTest: Spek({
     val total = Random.nextInt()
     lateinit var networkStateObser: Observer<Event<NetworkState>>
     lateinit var noMatchingAccountObserver: Observer<Event<Boolean>>
+    var sizePerPage = 0
+    var paramsKey = 0
 
     beforeEachGroup {
-        initialParams = mock()
+        paramsKey = Random.nextInt(1, Int.MAX_VALUE-1)
+        sizePerPage = Random.nextInt( 1, 100)
+        initialParams = LoadInitialParams(sizePerPage, false)
         initialCallback = mock()
         searchUserUseCase = mock()
-        params = mock()
+        params = LoadParams(paramsKey, sizePerPage)
         callBack = mock()
         networkStateObser = mock()
         noMatchingAccountObserver = mock()
@@ -62,7 +66,7 @@ class SearchUserPageKeyDataSourceTest: Spek({
                 total, false, listOf(user)
             )
             Given("search users result"){
-               given(searchUserUseCase.search(query, 1))
+               given(searchUserUseCase.search(query, 1, sizePerPage))
                    .willReturn(Maybe.just(result.copy()))
             }
             When("load initial"){
@@ -84,7 +88,7 @@ class SearchUserPageKeyDataSourceTest: Spek({
             val errorMessage = "error"
             val exception = Exception(errorMessage)
             Given("exception"){
-                given(searchUserUseCase.search(query, 1))
+                given(searchUserUseCase.search(query, 1, sizePerPage))
                     .willReturn(Maybe.error(exception))
             }
             When("load initial"){
@@ -106,7 +110,7 @@ class SearchUserPageKeyDataSourceTest: Spek({
             val errorMessage = SearchUsersUseCase.ERROR_MESSAGE_NO_MATCHING_ACCOUNT
             val exception = GithubException(ErrorType.COMMON, errorMessage, 0)
             Given("exception"){
-                given(searchUserUseCase.search(query, 1))
+                given(searchUserUseCase.search(query, 1, sizePerPage))
                     .willReturn(Maybe.error(exception))
             }
             When("load initial"){
@@ -134,7 +138,7 @@ class SearchUserPageKeyDataSourceTest: Spek({
             val errorMessage = "failed to connect"
             val exception = GithubException(ErrorType.NETWORK, errorMessage, 0)
             Given("exception"){
-                given(searchUserUseCase.search(query, 1))
+                given(searchUserUseCase.search(query, 1, sizePerPage))
                     .willReturn(Maybe.error(exception))
             }
             When("load initial"){
@@ -154,7 +158,6 @@ class SearchUserPageKeyDataSourceTest: Spek({
     }
 
     Feature("load after"){
-        val paramsKey = Random.nextInt(1, Int.MAX_VALUE-1)
         Scenario("success load after"){
             val user = User(1,
                 "https://avatars0.githubusercontent.com/u/20434351?v=4",
@@ -163,11 +166,8 @@ class SearchUserPageKeyDataSourceTest: Spek({
                 total, false, listOf(user)
             )
             Given("search users result"){
-                given(searchUserUseCase.search(query, paramsKey))
+                given(searchUserUseCase.search(query, paramsKey, sizePerPage))
                     .willReturn(Maybe.just(result.copy()))
-            }
-            Given("params key"){
-                params = LoadParams(paramsKey, Random.nextInt())
             }
             When("load after"){
                 pageKeyDataSource.loadAfter(params, callBack)
@@ -188,11 +188,8 @@ class SearchUserPageKeyDataSourceTest: Spek({
             val errorMessage = "error"
             val exception = Exception(errorMessage)
             Given("exception"){
-                given(searchUserUseCase.search(query, paramsKey))
+                given(searchUserUseCase.search(query, paramsKey, sizePerPage))
                     .willReturn(Maybe.error(exception))
-            }
-            Given("params key"){
-                params = LoadParams(paramsKey, Random.nextInt())
             }
             When("load initial"){
                 pageKeyDataSource.loadAfter(params, callBack)
@@ -213,11 +210,8 @@ class SearchUserPageKeyDataSourceTest: Spek({
             val errorMessage = SearchUsersUseCase.ERROR_MESSAGE_END_OF_PAGE
             val exception = GithubException(ErrorType.COMMON, errorMessage, 0)
             Given("exception"){
-                given(searchUserUseCase.search(query, paramsKey))
+                given(searchUserUseCase.search(query, paramsKey, sizePerPage))
                     .willReturn(Maybe.error(exception))
-            }
-            Given("params key"){
-                params = LoadParams(paramsKey, Random.nextInt())
             }
             When("load initial"){
                 pageKeyDataSource.loadAfter(params, callBack)
@@ -238,11 +232,8 @@ class SearchUserPageKeyDataSourceTest: Spek({
             val errorMessage = "failed to connect"
             val exception = GithubException(ErrorType.NETWORK, errorMessage, 0)
             Given("exception"){
-                given(searchUserUseCase.search(query, paramsKey))
+                given(searchUserUseCase.search(query, paramsKey, sizePerPage))
                     .willReturn(Maybe.error(exception))
-            }
-            Given("params key"){
-                params = LoadParams(paramsKey, Random.nextInt())
             }
             When("load initial"){
                 pageKeyDataSource.loadAfter(params, callBack)

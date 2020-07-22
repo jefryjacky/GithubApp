@@ -15,8 +15,8 @@ class GithubApiImpl @Inject constructor(
     private val api:GithubApiService,
     private val schedulers:RxSchedulers
 ):GithubApi {
-    override fun searchUsers(query: String, page: Int): Single<SearchUserResult> {
-        return api.searchUser(query, page).map{
+    override fun searchUsers(query: String, page: Int, sizePerPage:Int): Single<SearchUserResult> {
+        return api.searchUser(query, page, sizePerPage).map{
            it.toEntity()
         }.onErrorResumeNext {
             if(it is HttpException){

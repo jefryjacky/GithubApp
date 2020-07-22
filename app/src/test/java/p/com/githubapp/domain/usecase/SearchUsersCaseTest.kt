@@ -14,33 +14,40 @@ import kotlin.random.Random
 class SearchUsersCaseTest: Spek({
     lateinit var githubRepository:GithubRepository
     lateinit var usecase:SearchUsersUseCase
+    lateinit var query:String
+    var page = 0
+    var totalResult = 0
+    var sizePerPage = 0
+    var incompleteResult = false
+    lateinit var list: List<User>
+
 
     beforeEachGroup {
         githubRepository = mock()
         usecase = SearchUsersUseCase(githubRepository)
+
+        query = "jef"
+        page = Random.nextInt(1, Int.MAX_VALUE)
+        sizePerPage = Random.nextInt(1, 100)
+        totalResult = Random.nextInt(1,100000)
+        incompleteResult = Random.nextBoolean()
+
+        val user = User(0,
+            "https://avatars0.githubusercontent.com/u/20434351?v=4",
+            "test")
+        list = listOf(user)
     }
 
     Feature("search"){
-        lateinit var query:String
-        var page = 0
         lateinit var testObserver:TestObserver<SearchUserResult>
         lateinit var result:SearchUserResult
         Scenario("search query isn't blank then success return user list"){
-            Given("query is jef"){
-                query = "jef"
-            }
-            Given("page is not zero"){
-                page = Random.nextInt(1, Int.MAX_VALUE)
-            }
             Given("search user result"){
-                val user = User(0,
-                    "https://avatars0.githubusercontent.com/u/20434351?v=4",
-                "test")
-                result = SearchUserResult(64, false, listOf(user))
-                given(githubRepository.search(query, page)).willReturn(Single.just(result.copy()))
+                result = SearchUserResult(totalResult, incompleteResult, list)
+                given(githubRepository.search(query, page, sizePerPage)).willReturn(Single.just(result.copy()))
             }
             When("search users"){
-                testObserver = usecase.search(query, page).test()
+                testObserver = usecase.search(query, page, sizePerPage).test()
             }
             Then("usecase return search result"){
                 testObserver.assertValue(result)
@@ -48,21 +55,15 @@ class SearchUsersCaseTest: Spek({
         }
 
         Scenario("search query is blank then return nothing"){
-            Given("query is jef"){
+            Given("query is blank"){
                 query = ""
             }
-            Given("page is 1"){
-                page = Random.nextInt(1, Int.MAX_VALUE)
-            }
             Given("search user result"){
-                val user = User(0,
-                    "https://avatars0.githubusercontent.com/u/20434351?v=4",
-                    "test")
-                result = SearchUserResult(64, false, listOf(user))
-                given(githubRepository.search(query, page)).willReturn(Single.just(result.copy()))
+                result = SearchUserResult(totalResult, incompleteResult, list)
+                given(githubRepository.search(query, page, sizePerPage)).willReturn(Single.just(result.copy()))
             }
             When("search users"){
-                testObserver = usecase.search(query, page).test()
+                testObserver = usecase.search(query, page, sizePerPage).test()
             }
             Then("usecase return search result"){
                 testObserver.assertNoValues()
@@ -73,9 +74,6 @@ class SearchUsersCaseTest: Spek({
         }
 
         Scenario("search page is 0 then return nothing"){
-            Given("query is jef"){
-                query = "Jef"
-            }
             Given("page is 0"){
                 page = 0
             }
@@ -83,11 +81,11 @@ class SearchUsersCaseTest: Spek({
                 val user = User(0,
                     "https://avatars0.githubusercontent.com/u/20434351?v=4",
                     "test")
-                result = SearchUserResult(64, false, listOf(user))
-                given(githubRepository.search(query, page)).willReturn(Single.just(result.copy()))
+                result = SearchUserResult(totalResult, incompleteResult, list)
+                given(githubRepository.search(query, page, sizePerPage)).willReturn(Single.just(result.copy()))
             }
             When("search users"){
-                testObserver = usecase.search(query, page).test()
+                testObserver = usecase.search(query, page, sizePerPage).test()
             }
             Then("usecase return search result"){
                 testObserver.assertNoValues()
@@ -98,20 +96,15 @@ class SearchUsersCaseTest: Spek({
         }
 
         Scenario("There is no matching account"){
-            Given("query is jef"){
-                query = "Jef"
-            }
-            Given("page 1..max"){
-                page = Random.nextInt(1, Int.MAX_VALUE)
+            Given("total result is zero"){
+                totalResult = 0
             }
             Given("search user result total is zero and empty list"){
-                var total = 0
-                lateinit var list:List<User>
-                result = SearchUserResult(total, false, list)
-                given(githubRepository.search(query, page)).willReturn(Single.just(result.copy()))
+                result = SearchUserResult(totalResult, incompleteResult, list)
+                given(githubRepository.search(query, page, sizePerPage)).willReturn(Single.just(result.copy()))
             }
             When("search users"){
-                testObserver = usecase.search(query, page).test()
+                testObserver = usecase.search(query, page, sizePerPage).test()
             }
             Then("usecase return no matching account error"){
                 testObserver.assertError {
@@ -121,20 +114,13 @@ class SearchUsersCaseTest: Spek({
         }
 
         Scenario("end of page"){
-            Given("query is jef"){
-                query = "Jef"
-            }
-            Given("page is 2..max"){
-                page = Random.nextInt(2, Int.MAX_VALUE)
-            }
-            Given("search user result total is not zero and list is empty"){
-                val total = Random.nextInt(1, Int.MAX_VALUE)
+            Given("search user result list is empty"){
                 val list = listOf<User>()
-                result = SearchUserResult(total, false, list)
-                given(githubRepository.search(query, page)).willReturn(Single.just(result.copy()))
+                result = SearchUserResult(totalResult, false, list)
+                given(githubRepository.search(query, page, sizePerPage)).willReturn(Single.just(result.copy()))
             }
             When("search users"){
-                testObserver = usecase.search(query, page).test()
+                testObserver = usecase.search(query, page, sizePerPage).test()
             }
             Then("usecase return error"){
                 testObserver.assertError {
