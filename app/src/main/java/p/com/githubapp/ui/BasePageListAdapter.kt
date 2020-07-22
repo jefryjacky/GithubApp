@@ -31,4 +31,8 @@ abstract class BasePageListAdapter<T,VH: RecyclerView.ViewHolder>(diffCallback: 
             notifyItemChanged(itemCount - 1)
         }
     }
+
+    fun getNetworkState():NetworkState?{
+        return networkState
+    }
 }

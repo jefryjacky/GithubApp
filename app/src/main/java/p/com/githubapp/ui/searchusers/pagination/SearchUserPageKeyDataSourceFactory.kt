@@ -9,12 +9,17 @@ import javax.inject.Inject
 
 class SearchUserPageKeyDataSourceFactory @Inject constructor(
     private val searchUsersUseCase: SearchUsersUseCase
-): DataSource.Factory<Int, User>() {
-    var query:String? = null
-    var disposeables:CompositeDisposable? = null
+) : DataSource.Factory<Int, User>() {
+    var query: String? = null
+    var disposeables: CompositeDisposable? = null
     val sourceLiveData = MutableLiveData<SearchUserPageKeyDataSource>()
+
     override fun create(): DataSource<Int, User> {
-        val source = SearchUserPageKeyDataSource(searchUsersUseCase, query?:"", disposeables!!)
+        val source = SearchUserPageKeyDataSource(
+            searchUsersUseCase,
+            query ?: "",
+            disposeables!!
+        )
         sourceLiveData.postValue(source)
         return source
     }

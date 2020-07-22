@@ -28,6 +28,10 @@ class SearchUsersViewModel @Inject constructor(
         pagination.invalidate()
     }
 
+    fun retry(){
+        pagination.retry()
+    }
+
     override fun onCleared() {
         super.onCleared()
         disposeables.clear()

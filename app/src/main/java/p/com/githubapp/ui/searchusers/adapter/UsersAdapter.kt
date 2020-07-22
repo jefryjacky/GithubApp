@@ -10,6 +10,8 @@ import p.com.githubapp.ui.NetworkStateViewHolder
 
 class UsersAdapter:BasePageListAdapter<User, RecyclerView.ViewHolder>(UserDiffUtil()) {
 
+    var retryCallBack:(()->Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when(viewType){
             R.layout.list_item_network_state -> NetworkStateViewHolder.create(parent)
@@ -24,6 +26,11 @@ class UsersAdapter:BasePageListAdapter<User, RecyclerView.ViewHolder>(UserDiffUt
                 val user = getItem(position)
                 user?.let {
                     (holder as UserViewHolder).bind(it)
+                }
+            }
+            R.layout.list_item_network_state->{
+                getNetworkState()?.let {
+                    (holder as NetworkStateViewHolder).bind(it, retryCallBack)
                 }
             }
         }

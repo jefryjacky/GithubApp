@@ -34,4 +34,6 @@ ext{
     lifecycle_version = "2.2.0"
     dagger_version = '2.25.2'
     okhttp_version = '4.2.2'
+    rx_android_version = "2.1.1"
+    rx_java2 = "2.2.19"
 }

@@ -2,15 +2,13 @@ package p.com.githubapp.di
 
 import dagger.Component
 import p.com.githubapp.MainActivity
-import p.com.githubapp.di.module.ApiModule
-import p.com.githubapp.di.module.NetworkModule
-import p.com.githubapp.di.module.RepositoryModule
-import p.com.githubapp.di.module.ViewModelModule
+import p.com.githubapp.di.module.*
 import p.com.githubapp.ui.searchusers.SearchUsersFragment
 import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [
+    ApplicationModule::class,
     ViewModelModule::class,
     RepositoryModule::class,
     ApiModule::class,

@@ -33,6 +33,9 @@ class SearchUsersFragment: BaseFragment(R.layout.fragment_search_users) {
     private fun initview(){
         rv_users.apply {
             setHasFixedSize(true)
+            mAdapter.retryCallBack = {
+                mViewModel.retry()
+            }
             adapter = mAdapter
         }
 

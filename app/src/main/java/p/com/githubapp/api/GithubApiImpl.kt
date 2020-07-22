@@ -2,6 +2,7 @@ package p.com.githubapp.api
 
 import com.google.gson.Gson
 import io.reactivex.Single
+import p.com.githubapp.common.scheduler.RxSchedulers
 import p.com.githubapp.domain.entity.SearchUserResult
 import p.com.githubapp.exception.ErrorType
 import p.com.githubapp.exception.GithubException
@@ -11,7 +12,8 @@ import java.io.IOException
 import javax.inject.Inject
 
 class GithubApiImpl @Inject constructor(
-    private val api:GithubApiService
+    private val api:GithubApiService,
+    private val schedulers:RxSchedulers
 ):GithubApi {
     override fun searchUsers(query: String, page: Int): Single<SearchUserResult> {
         return api.searchUser(query, page).map{
@@ -26,6 +28,7 @@ class GithubApiImpl @Inject constructor(
                 return@onErrorResumeNext Single.error<SearchUserResult>(GithubException(ErrorType.NETWORK, it.localizedMessage ?:"", 0))
             }
             return@onErrorResumeNext Single.error(it)
-        }
+        }.subscribeOn(schedulers.networkThread())
+            .observeOn(schedulers.mainThread())
     }
 }

@@ -3,4 +3,5 @@
     <string name="search">Search</string>
     <string name="no_matching_account">There is no matching account</string>
     <string name="btn_ok">OK</string>
+    <string name="btn_retry">Retry</string>
 </resources>

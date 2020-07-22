@@ -6,6 +6,7 @@ import androidx.paging.PageKeyedDataSource
 import io.reactivex.Completable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import p.com.githubapp.common.scheduler.RxSchedulers
 import p.com.githubapp.domain.entity.User
 import p.com.githubapp.domain.usecase.SearchUsersUseCase
 import p.com.githubapp.exception.ErrorType
