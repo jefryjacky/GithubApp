@@ -9,9 +9,8 @@ import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_search_users.*
 import p.com.githubapp.MainActivity
 import p.com.githubapp.R
-import p.com.githubapp.ui.BaseFragment
-import p.com.githubapp.ui.NetworkState
-import p.com.githubapp.ui.Status
+import p.com.githubapp.commonandroid.BaseFragment
+import p.com.githubapp.commonandroid.Status
 import p.com.githubapp.ui.searchusers.adapter.UsersAdapter
 
 class SearchUsersFragment: BaseFragment(R.layout.fragment_search_users) {

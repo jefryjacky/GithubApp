@@ -5,10 +5,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import p.com.githubapp.R
 import p.com.githubapp.domain.entity.User
-import p.com.githubapp.ui.BasePageListAdapter
-import p.com.githubapp.ui.NetworkStateViewHolder
+import p.com.githubapp.commonandroid.BasePageListAdapter
+import p.com.githubapp.commonandroid.NetworkStateViewHolder
 
-class UsersAdapter:BasePageListAdapter<User, RecyclerView.ViewHolder>(UserDiffUtil()) {
+class UsersAdapter:
+    BasePageListAdapter<User, RecyclerView.ViewHolder>(UserDiffUtil()) {
 
     var retryCallBack:(()->Unit)? = null
 

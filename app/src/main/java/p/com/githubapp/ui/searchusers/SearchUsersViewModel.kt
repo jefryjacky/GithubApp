@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
 import io.reactivex.disposables.CompositeDisposable
 import p.com.githubapp.domain.entity.User
-import p.com.githubapp.ui.Event
-import p.com.githubapp.ui.NetworkState
+import p.com.githubapp.commonandroid.Event
+import p.com.githubapp.commonandroid.NetworkState
 import p.com.githubapp.ui.searchusers.pagination.SearchUsersPagination
 import javax.inject.Inject
 

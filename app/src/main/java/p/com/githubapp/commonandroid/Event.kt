@@ -1,4 +1,4 @@
-package p.com.githubapp.ui
+package p.com.githubapp.commonandroid
 
 class Event<T>(private val content:T) {
     var hasBeenHandle =  false

@@ -1,4 +1,4 @@
-package p.com.githubapp.ui
+package p.com.githubapp.commonandroid
 
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -16,7 +16,7 @@ abstract class BasePageListAdapter<T,VH: RecyclerView.ViewHolder>(diffCallback: 
         return networkState != null && networkState != NetworkState.LOADED
     }
 
-    fun setNetworkState(newNetworkState:NetworkState){
+    fun setNetworkState(newNetworkState: NetworkState){
         val previousState = this.networkState
         val hadExtraRow = hasExtraRow()
         this.networkState = newNetworkState
@@ -32,7 +32,7 @@ abstract class BasePageListAdapter<T,VH: RecyclerView.ViewHolder>(diffCallback: 
         }
     }
 
-    fun getNetworkState():NetworkState?{
+    fun getNetworkState(): NetworkState?{
         return networkState
     }
 }

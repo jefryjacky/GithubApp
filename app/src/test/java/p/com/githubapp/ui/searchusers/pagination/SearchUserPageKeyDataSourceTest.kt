@@ -15,8 +15,8 @@ import p.com.githubapp.domain.usecase.SearchUsersUseCase
 import p.com.githubapp.exception.ErrorType
 import p.com.githubapp.exception.GithubException
 import p.com.githubapp.extension.instantTaskExecutorRule
-import p.com.githubapp.ui.Event
-import p.com.githubapp.ui.NetworkState
+import p.com.githubapp.commonandroid.Event
+import p.com.githubapp.commonandroid.NetworkState
 import java.lang.Exception
 import kotlin.random.Random
 

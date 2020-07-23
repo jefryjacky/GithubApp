@@ -2,7 +2,6 @@ package p.com.githubapp.api
 
 import com.google.gson.Gson
 import io.reactivex.Single
-import p.com.githubapp.common.scheduler.RxSchedulers
 import p.com.githubapp.domain.entity.SearchUserResult
 import p.com.githubapp.exception.ErrorType
 import p.com.githubapp.exception.GithubException

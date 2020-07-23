@@ -1,4 +1,4 @@
-package p.com.githubapp.ui
+package p.com.githubapp.commonandroid
 
 import android.view.LayoutInflater
 import android.view.View
@@ -19,8 +19,11 @@ class NetworkStateViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) 
     }
 
     companion object{
-        fun create(parent: ViewGroup):NetworkStateViewHolder{
-            return NetworkStateViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.list_item_network_state, parent, false))
+        fun create(parent: ViewGroup): NetworkStateViewHolder {
+            return NetworkStateViewHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.list_item_network_state, parent, false)
+            )
         }
     }
 }

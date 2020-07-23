@@ -1,4 +1,4 @@
-package p.com.githubapp.common.scheduler
+package p.com.githubapp.commonandroid.scheduler
 
 import io.reactivex.Scheduler
 

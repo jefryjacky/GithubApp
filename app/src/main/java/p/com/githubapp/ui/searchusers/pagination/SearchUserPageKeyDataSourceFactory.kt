@@ -3,7 +3,7 @@ package p.com.githubapp.ui.searchusers.pagination
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import io.reactivex.disposables.CompositeDisposable
-import p.com.githubapp.common.scheduler.RxSchedulers
+import p.com.githubapp.commonandroid.scheduler.RxSchedulers
 import p.com.githubapp.domain.entity.User
 import p.com.githubapp.domain.usecase.SearchUsersUseCase
 import javax.inject.Inject

@@ -1,8 +1,8 @@
-package p.com.githubapp.common.schedulers
+package p.com.githubapp.commonandroid.schedulers
 
 import io.reactivex.Scheduler
 import io.reactivex.schedulers.Schedulers
-import p.com.githubapp.common.scheduler.RxSchedulers
+import p.com.githubapp.commonandroid.scheduler.RxSchedulers
 
 class TestRxSchedulers:RxSchedulers {
     override fun mainThread(): Scheduler {

@@ -1,4 +1,4 @@
-package p.com.githubapp.di
+package p.com.githubapp.commonandroid.di
 
 import dagger.MapKey
 import androidx.lifecycle.ViewModel

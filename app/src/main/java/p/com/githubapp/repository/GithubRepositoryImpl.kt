@@ -1,7 +1,7 @@
 package p.com.githubapp.repository
 
 import io.reactivex.Single
-import p.com.githubapp.common.scheduler.RxSchedulers
+import p.com.githubapp.commonandroid.scheduler.RxSchedulers
 import p.com.githubapp.domain.entity.SearchUserResult
 import p.com.githubapp.repository.api.GithubApi
 import javax.inject.Inject

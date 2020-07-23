@@ -5,13 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import io.reactivex.Completable
 import io.reactivex.disposables.CompositeDisposable
-import p.com.githubapp.common.scheduler.RxSchedulers
+import p.com.githubapp.commonandroid.scheduler.RxSchedulers
 import p.com.githubapp.domain.entity.User
 import p.com.githubapp.domain.usecase.SearchUsersUseCase
 import p.com.githubapp.exception.ErrorType
 import p.com.githubapp.exception.GithubException
-import p.com.githubapp.ui.Event
-import p.com.githubapp.ui.NetworkState
+import p.com.githubapp.commonandroid.Event
+import p.com.githubapp.commonandroid.NetworkState
 
 class SearchUserPageKeyDataSource constructor(
     private val searchUsersUseCase: SearchUsersUseCase,
@@ -30,12 +30,21 @@ class SearchUserPageKeyDataSource constructor(
     ) {
         disposeables.add(searchUsersUseCase.search(query, 1, params.requestedLoadSize)
             .observeOn(schedulers.mainThread())
-            .doOnSubscribe { networkStateEvent.postValue(Event(NetworkState.LOADING)) }
+            .doOnSubscribe { networkStateEvent.postValue(
+                Event(
+                    NetworkState.LOADING
+                )
+            ) }
             .doAfterSuccess {
-                networkStateEvent.value =  Event(NetworkState.LOADED)
+                networkStateEvent.value =
+                    Event(NetworkState.LOADED)
             }
             .doOnComplete {
-                networkStateEvent.postValue(Event(NetworkState.LOADED))
+                networkStateEvent.postValue(
+                    Event(
+                        NetworkState.LOADED
+                    )
+                )
             }
             .subscribe({
                 callback.onResult(it.users,
@@ -52,12 +61,21 @@ class SearchUserPageKeyDataSource constructor(
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, User>) {
         disposeables.add(searchUsersUseCase.search(query, params.key, params.requestedLoadSize)
             .observeOn(schedulers.mainThread())
-            .doOnSubscribe { networkStateEvent.postValue(Event(NetworkState.LOADING)) }
+            .doOnSubscribe { networkStateEvent.postValue(
+                Event(
+                    NetworkState.LOADING
+                )
+            ) }
             .doOnSuccess {
-                networkStateEvent.value =  Event(NetworkState.LOADED)
+                networkStateEvent.value =
+                    Event(NetworkState.LOADED)
             }
             .doOnComplete {
-                networkStateEvent.postValue(Event(NetworkState.LOADED))
+                networkStateEvent.postValue(
+                    Event(
+                        NetworkState.LOADED
+                    )
+                )
             }
             .subscribe({
                 callback.onResult(it.users,
@@ -87,18 +105,34 @@ class SearchUserPageKeyDataSource constructor(
             if(t.type == ErrorType.COMMON){
                 when (t.message) {
                     SearchUsersUseCase.ERROR_MESSAGE_NO_MATCHING_ACCOUNT -> {
-                        noMatchingAccountEvent.postValue(Event(true))
-                        networkStateEvent.postValue(Event(NetworkState.LOADED))
+                        noMatchingAccountEvent.postValue(
+                            Event(
+                                true
+                            )
+                        )
+                        networkStateEvent.postValue(
+                            Event(
+                                NetworkState.LOADED
+                            )
+                        )
                         return
                     }
                     SearchUsersUseCase.ERROR_MESSAGE_END_OF_PAGE -> {
-                        networkStateEvent.postValue(Event(NetworkState.LOADED))
+                        networkStateEvent.postValue(
+                            Event(
+                                NetworkState.LOADED
+                            )
+                        )
                         return
                     }
                 }
             }
         }
-        networkStateEvent.postValue(Event(NetworkState.error(t.message)))
+        networkStateEvent.postValue(
+            Event(
+                NetworkState.error(t.message)
+            )
+        )
     }
 
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, User>) {

@@ -1,4 +1,4 @@
-package p.com.githubapp.ui
+package p.com.githubapp.commonandroid
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

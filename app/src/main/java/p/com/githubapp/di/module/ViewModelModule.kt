@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
-import p.com.githubapp.di.ViewModelKey
-import p.com.githubapp.ui.ViewModelFactory
+import p.com.githubapp.commonandroid.di.ViewModelKey
+import p.com.githubapp.commonandroid.ViewModelFactory
 import p.com.githubapp.ui.searchusers.SearchUsersViewModel
 import javax.inject.Singleton
 
