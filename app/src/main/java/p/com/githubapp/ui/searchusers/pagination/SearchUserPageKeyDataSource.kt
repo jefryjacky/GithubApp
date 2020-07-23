@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import io.reactivex.Completable
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import p.com.githubapp.common.scheduler.RxSchedulers
 import p.com.githubapp.domain.entity.User
 import p.com.githubapp.domain.usecase.SearchUsersUseCase
@@ -17,6 +16,7 @@ import p.com.githubapp.ui.NetworkState
 class SearchUserPageKeyDataSource constructor(
     private val searchUsersUseCase: SearchUsersUseCase,
     private val query: String,
+    private val schedulers: RxSchedulers,
     private val disposeables:CompositeDisposable
 ) : PageKeyedDataSource<Int, User>() {
 
@@ -29,9 +29,10 @@ class SearchUserPageKeyDataSource constructor(
         callback: LoadInitialCallback<Int, User>
     ) {
         disposeables.add(searchUsersUseCase.search(query, 1, params.requestedLoadSize)
+            .observeOn(schedulers.mainThread())
             .doOnSubscribe { networkStateEvent.postValue(Event(NetworkState.LOADING)) }
             .doAfterSuccess {
-                networkStateEvent.postValue(Event(NetworkState.LOADED))
+                networkStateEvent.value =  Event(NetworkState.LOADED)
             }
             .doOnComplete {
                 networkStateEvent.postValue(Event(NetworkState.LOADED))
@@ -50,9 +51,10 @@ class SearchUserPageKeyDataSource constructor(
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, User>) {
         disposeables.add(searchUsersUseCase.search(query, params.key, params.requestedLoadSize)
+            .observeOn(schedulers.mainThread())
             .doOnSubscribe { networkStateEvent.postValue(Event(NetworkState.LOADING)) }
-            .doAfterSuccess {
-                networkStateEvent.postValue(Event(NetworkState.LOADED))
+            .doOnSuccess {
+                networkStateEvent.value =  Event(NetworkState.LOADED)
             }
             .doOnComplete {
                 networkStateEvent.postValue(Event(NetworkState.LOADED))

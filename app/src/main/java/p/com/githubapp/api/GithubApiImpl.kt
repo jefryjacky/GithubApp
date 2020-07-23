@@ -12,8 +12,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 class GithubApiImpl @Inject constructor(
-    private val api:GithubApiService,
-    private val schedulers:RxSchedulers
+    private val api:GithubApiService
 ):GithubApi {
     override fun searchUsers(query: String, page: Int, sizePerPage:Int): Single<SearchUserResult> {
         return api.searchUser(query, page, sizePerPage).map{
@@ -28,7 +27,6 @@ class GithubApiImpl @Inject constructor(
                 return@onErrorResumeNext Single.error<SearchUserResult>(GithubException(ErrorType.NETWORK, it.localizedMessage ?:"", 0))
             }
             return@onErrorResumeNext Single.error(it)
-        }.subscribeOn(schedulers.networkThread())
-            .observeOn(schedulers.mainThread())
+        }
     }
 }
