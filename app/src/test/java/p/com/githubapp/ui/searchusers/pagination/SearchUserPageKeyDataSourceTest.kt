@@ -17,6 +17,7 @@ import p.com.githubapp.exception.GithubException
 import p.com.githubapp.extension.instantTaskExecutorRule
 import p.com.githubapp.commonandroid.Event
 import p.com.githubapp.commonandroid.NetworkState
+import p.com.githubapp.commonandroid.schedulers.TestRxSchedulers
 import java.lang.Exception
 import kotlin.random.Random
 
@@ -36,6 +37,7 @@ class SearchUserPageKeyDataSourceTest: Spek({
     lateinit var noMatchingAccountObserver: Observer<Event<Boolean>>
     var sizePerPage = 0
     var paramsKey = 0
+    val schedulers = TestRxSchedulers()
 
     beforeEachGroup {
         paramsKey = Random.nextInt(1, Int.MAX_VALUE-1)
@@ -48,7 +50,7 @@ class SearchUserPageKeyDataSourceTest: Spek({
         networkStateObser = mock()
         noMatchingAccountObserver = mock()
         pageKeyDataSource = spy(SearchUserPageKeyDataSource(searchUserUseCase,
-            query, disposeables))
+            query, schedulers, disposeables))
         pageKeyDataSource.networkStateEvent.observeForever(networkStateObser)
         pageKeyDataSource.noMatchingAccountEvent.observeForever(noMatchingAccountObserver)
     }

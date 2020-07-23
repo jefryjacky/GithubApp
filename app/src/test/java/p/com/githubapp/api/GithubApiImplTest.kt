@@ -29,10 +29,10 @@ class GithubApiImplTest:Spek({
     beforeEachGroup {
         val url = server.url("/")
         val service = createService(url, GithubApiService::class.java)
-        api = GithubApiImpl(service, TestRxSchedulers())
+        api = GithubApiImpl(service)
     }
 
-//    afterGroup { server.shutdown() }
+    afterGroup { server.shutdown() }
 
     Feature("search user"){
         lateinit var testObserver:TestObserver<SearchUserResult>
